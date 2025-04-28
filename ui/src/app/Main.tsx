@@ -25,7 +25,7 @@ export default function Main() {
   return (
     <>
       <h1 className="flex h-[60px] bg-[#0E103D] text-white items-center px-10 text-2xl font-medium">
-        Research Helper
+        Scott's Perplexity Clone
       </h1>
 
       <div
