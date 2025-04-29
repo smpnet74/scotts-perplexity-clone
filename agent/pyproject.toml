@@ -25,7 +25,8 @@ dependencies = [
     "langgraph-cli[inmem]>=0.1.64",
     "langgraph-checkpoint-sqlite>=2.0.1",
     "aiosqlite>=0.20.0",
-    "aiohttp>=3.9.3"
+    "aiohttp>=3.9.3",
+    "portkey-ai>=1.2.0"
 ]
 
 [build-system]
@@ -49,6 +50,7 @@ html2text = "^2024.2.26"
 langchain-core = "^0.3.25"
 langgraph-cli = {extras = ["inmem"], version = "^0.1.64"}
 langgraph-checkpoint-sqlite = "^2.0.1"
+portkey-ai = "^1.2.0"
 aiosqlite = "^0.20.0"
 aiohttp = "^3.9.3"
 

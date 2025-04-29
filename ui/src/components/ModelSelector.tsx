@@ -21,10 +21,10 @@ export function ModelSelector() {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="openai">GPT-4o-Mini-Langgraph</SelectItem>
-          <SelectItem value="anthropic">Anthropic</SelectItem>
-          <SelectItem value="google_genai">Google Generative AI</SelectItem>
-          <SelectItem value="llama_33_70b">Llama33-70b-Langgraph</SelectItem>
-          <SelectItem value="crewai">CrewAI</SelectItem>
+          <SelectItem value="anthropic">Anthropic -Notworking </SelectItem>
+          <SelectItem value="google_genai">Google - Notworking</SelectItem>
+          <SelectItem value="gemini_25_flash">Gemini-2.5-Flash-Langgraph</SelectItem>
+          <SelectItem value="crewai">GPT-4o-Mini-CrewAI</SelectItem>
         </SelectContent>
       </Select>
     </div>

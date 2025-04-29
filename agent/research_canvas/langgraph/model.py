@@ -61,20 +61,11 @@ def get_model(state: AgentState) -> BaseChatModel:
             model="gemini-1.5-pro",
             api_key=cast(Any, os.getenv("GOOGLE_API_KEY")) or None
         )
-    if model == "llama_33_70b":
-        portkey_config = os.getenv("PORTKEY_LLAMA3370B_CONFIG")
-        headers = createHeaders(
-            api_key=os.getenv("PORTKEY_API_KEY"),
-            config=portkey_config,
-            #provider="llama"
-        )
-        print("Portkey headers:", headers)
-        print("PORTKEY_LLAMA3370B_CONFIG:", portkey_config)
-        from langchain_openai import ChatOpenAI
-        return ChatOpenAI(
+    if model == "gemini_25_flash":
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        print(f"Using Gemini 2.5 Flash model with API key: {os.getenv('GOOGLE_API_KEY') is not None}")
+        return ChatGoogleGenerativeAI(
             temperature=0,
-            model="llama-3-70b-instruct",
-            api_key=os.getenv("PORTKEY_API_KEY"),
-            base_url=PORTKEY_GATEWAY_URL,
-            default_headers=headers
+            model="gemini-2.5-flash",
+            api_key=cast(Any, os.getenv("GOOGLE_API_KEY")) or None
         )
