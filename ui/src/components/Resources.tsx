@@ -87,7 +87,7 @@ export function Resources({
                     data-test-id="remove-resource"
                     variant="ghost"
                     size="icon"
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                       e.stopPropagation();
                       removeResource?.(resource.url);
                     }}

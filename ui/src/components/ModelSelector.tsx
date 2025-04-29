@@ -16,13 +16,14 @@ export function ModelSelector() {
   return (
     <div className="fixed bottom-0 left-0 p-4 z-50">
       <Select value={model} onValueChange={(v) => setModel(v)}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[260px]">
           <SelectValue placeholder="Theme" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="openai">OpenAI</SelectItem>
+          <SelectItem value="openai">GPT-4o-Mini-Langgraph</SelectItem>
           <SelectItem value="anthropic">Anthropic</SelectItem>
           <SelectItem value="google_genai">Google Generative AI</SelectItem>
+          <SelectItem value="llama_33_70b">Llama33-70b-Langgraph</SelectItem>
           <SelectItem value="crewai">CrewAI</SelectItem>
         </SelectContent>
       </Select>
