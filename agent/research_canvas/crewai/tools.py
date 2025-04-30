@@ -8,6 +8,8 @@ from tavily import TavilyClient
 from copilotkit.crewai import copilotkit_emit_state, copilotkit_predict_state, copilotkit_stream
 from litellm import completion
 from litellm.types.utils import Message as LiteLLMMessage, ChatCompletionMessageToolCall
+# Import Portkey utilities for OpenAI model integration
+from portkey_ai import createHeaders, PORTKEY_GATEWAY_URL
 
 HITL_TOOLS = ["DeleteResources"]
 
@@ -171,26 +173,45 @@ async def perform_search(state: Dict[str, Any], queries: List[str], tool_call_id
         }
     )
 
+    # Get Portkey configuration from environment variables
+    portkey_api_key = os.getenv("PORTKEY_API_KEY")
+    portkey_config = os.getenv("PORTKEY_OPENAI_CONFIG")
+    model_name = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    
+    # Create Portkey headers
+    portkey_headers = createHeaders(
+        api_key=portkey_api_key,
+        provider="openai"  # Using OpenAI as the provider
+    )
+    
+    # Add config to headers if provided
+    if portkey_config:
+        portkey_headers["x-portkey-config"] = portkey_config
+    
+    # Configure LiteLLM with Portkey
     response = await copilotkit_stream(
-        completion(
-            model="openai/gpt-4o",
-            messages=[
-                {
-                    "role": "system", 
-                    "content": "You need to extract the 3-5 most relevant resources from the following search results."
-                },
-                *state["messages"],
-                {
-                    "role": "tool",
-                    "content": f"Performed search: {search_results}",
-                    "tool_call_id": tool_call_id
-                }
-            ],
-            tools=[EXTRACT_RESOURCES_TOOL],
-            tool_choice="required",
-            parallel_tool_calls=False,
-            stream=True
-        )
+    completion(
+        model=f"openai/{model_name}",
+        messages=[
+            {
+                "role": "system", 
+                "content": "You need to extract the 3-5 most relevant resources from the following search results."
+            },
+            *state["messages"],
+            {
+                "role": "tool",
+                "content": f"Performed search: {search_results}",
+                "tool_call_id": tool_call_id
+            }
+        ],
+        tools=[EXTRACT_RESOURCES_TOOL],
+        tool_choice="required",
+        parallel_tool_calls=False,
+        stream=True,
+        api_key=portkey_api_key,
+        base_url=PORTKEY_GATEWAY_URL,
+        headers=portkey_headers
+    )
     )
 
     state["logs"] = []
