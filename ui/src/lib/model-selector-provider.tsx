@@ -23,9 +23,9 @@ export const ModelSelectorProvider = ({
 }) => {
   const model =
     globalThis.window === undefined
-      ? "openai"
+      ? "model1"
       : new URL(window.location.href).searchParams.get("coAgentsModel") ??
-        "openai";
+        "model1";
   const [hidden, setHidden] = useState<boolean>(false);
 
   const setModel = (model: string) => {
@@ -40,7 +40,7 @@ export const ModelSelectorProvider = ({
       : new URL(window.location.href).searchParams.get("lgcDeploymentUrl");
 
   let agent = "research_agent";
-  if (model === "google_genai") {
+  if (model === "model3") {
     agent = "research_agent_google_genai";
   } else if (model === "crewai") {
     agent = "research_agent_crewai";

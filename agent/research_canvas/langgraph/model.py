@@ -19,7 +19,7 @@ def get_model(state: AgentState) -> BaseChatModel:
 
     print(f"Using model: {model}")
 
-    if model == "openai":
+    if model == "model1":
         from langchain_openai import ChatOpenAI
         
         # Get Portkey API key from environment
@@ -46,7 +46,7 @@ def get_model(state: AgentState) -> BaseChatModel:
             base_url=PORTKEY_GATEWAY_URL,
             default_headers=portkey_headers
         )
-    if model == "anthropic":
+    if model == "model2":
         from langchain_anthropic import ChatAnthropic
         return ChatAnthropic(
             temperature=0,
@@ -54,14 +54,37 @@ def get_model(state: AgentState) -> BaseChatModel:
             timeout=None,
             stop=None
         )
-    if model == "google_genai":
-        from langchain_google_genai import ChatGoogleGenerativeAI
-        return ChatGoogleGenerativeAI(
-            temperature=0,
-            model="gemini-1.5-pro",
-            api_key=cast(Any, os.getenv("GOOGLE_API_KEY")) or None
+    if model == "model3":
+        print(f"Using Llama 4 Maverick model via Portkey OpenAI-compatible API")
+        
+        # Get Portkey API key from environment
+        portkey_api_key = os.getenv("PORTKEY_API_KEY")
+        # Get Portkey config for Gemini 2.5 Flash
+        portkey_config = os.getenv("PORTKEY_LLAMA4MAVRICK_CONFIG")
+        
+        # Since Portkey presents an OpenAI-compatible API, use ChatOpenAI instead
+        from langchain_openai import ChatOpenAI
+        
+        print(f"Using Portkey for Llama 4 Maverick with config: {portkey_config}")
+        
+        # Create Portkey headers
+        portkey_headers = createHeaders(
+            api_key=portkey_api_key,
+            provider="openai"  # Using OpenAI-compatible API
         )
-    if model == "gemini_25_flash":
+        
+        # Add config to headers
+        if portkey_config:
+            portkey_headers["x-portkey-config"] = portkey_config
+        
+        return ChatOpenAI(
+            temperature=0,
+            model="gemini-2.5-flash",  # The model name will be mapped by Portkey
+            api_key=portkey_api_key,
+            base_url=PORTKEY_GATEWAY_URL,
+            default_headers=portkey_headers
+        )
+    if model == "model4":
         print(f"Using Gemini 2.5 Flash model via Portkey OpenAI-compatible API")
         
         # Get Portkey API key from environment
@@ -72,31 +95,22 @@ def get_model(state: AgentState) -> BaseChatModel:
         # Since Portkey presents an OpenAI-compatible API, use ChatOpenAI instead
         from langchain_openai import ChatOpenAI
         
-        if portkey_api_key and portkey_config:
-            print(f"Using Portkey for Gemini 2.5 Flash with config: {portkey_config}")
-            
-            # Create Portkey headers
-            portkey_headers = createHeaders(
-                api_key=portkey_api_key,
-                provider="openai"  # Using OpenAI-compatible API
-            )
-            
-            # Add config to headers
+        print(f"Using Portkey for Gemini 2.5 Flash with config: {portkey_config}")
+        
+        # Create Portkey headers
+        portkey_headers = createHeaders(
+            api_key=portkey_api_key,
+            provider="openai"  # Using OpenAI-compatible API
+        )
+        
+        # Add config to headers
+        if portkey_config:
             portkey_headers["x-portkey-config"] = portkey_config
-            
-            return ChatOpenAI(
-                temperature=0,
-                model="gemini-2.5-flash",  # The model name will be mapped by Portkey
-                api_key=portkey_api_key,
-                base_url=PORTKEY_GATEWAY_URL,
-                default_headers=portkey_headers
-            )
-        else:
-            # Fallback to direct Google API if Portkey is not configured
-            from langchain_google_genai import ChatGoogleGenerativeAI
-            print("Falling back to direct Google API for Gemini 2.5 Flash")
-            return ChatGoogleGenerativeAI(
-                temperature=0,
-                model="gemini-2.5-flash",
-                api_key=cast(Any, os.getenv("GOOGLE_API_KEY")) or None
-            )
+        
+        return ChatOpenAI(
+            temperature=0,
+            model="gemini-2.5-flash",  # The model name will be mapped by Portkey
+            api_key=portkey_api_key,
+            base_url=PORTKEY_GATEWAY_URL,
+            default_headers=portkey_headers
+        )
