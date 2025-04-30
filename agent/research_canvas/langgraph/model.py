@@ -62,10 +62,41 @@ def get_model(state: AgentState) -> BaseChatModel:
             api_key=cast(Any, os.getenv("GOOGLE_API_KEY")) or None
         )
     if model == "gemini_25_flash":
-        from langchain_google_genai import ChatGoogleGenerativeAI
-        print(f"Using Gemini 2.5 Flash model with API key: {os.getenv('GOOGLE_API_KEY') is not None}")
-        return ChatGoogleGenerativeAI(
-            temperature=0,
-            model="gemini-2.5-flash",
-            api_key=cast(Any, os.getenv("GOOGLE_API_KEY")) or None
-        )
+        print(f"Using Gemini 2.5 Flash model via Portkey OpenAI-compatible API")
+        
+        # Get Portkey API key from environment
+        portkey_api_key = os.getenv("PORTKEY_API_KEY")
+        # Get Portkey config for Gemini 2.5 Flash
+        portkey_config = os.getenv("PORTKEY_GEMINI25FLASH_CONFIG")
+        
+        # Since Portkey presents an OpenAI-compatible API, use ChatOpenAI instead
+        from langchain_openai import ChatOpenAI
+        
+        if portkey_api_key and portkey_config:
+            print(f"Using Portkey for Gemini 2.5 Flash with config: {portkey_config}")
+            
+            # Create Portkey headers
+            portkey_headers = createHeaders(
+                api_key=portkey_api_key,
+                provider="openai"  # Using OpenAI-compatible API
+            )
+            
+            # Add config to headers
+            portkey_headers["x-portkey-config"] = portkey_config
+            
+            return ChatOpenAI(
+                temperature=0,
+                model="gemini-2.5-flash",  # The model name will be mapped by Portkey
+                api_key=portkey_api_key,
+                base_url=PORTKEY_GATEWAY_URL,
+                default_headers=portkey_headers
+            )
+        else:
+            # Fallback to direct Google API if Portkey is not configured
+            from langchain_google_genai import ChatGoogleGenerativeAI
+            print("Falling back to direct Google API for Gemini 2.5 Flash")
+            return ChatGoogleGenerativeAI(
+                temperature=0,
+                model="gemini-2.5-flash",
+                api_key=cast(Any, os.getenv("GOOGLE_API_KEY")) or None
+            )

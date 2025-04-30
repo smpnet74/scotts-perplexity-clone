@@ -108,7 +108,8 @@ async def perform_tool_calls(state: Dict[str, Any]):
         return False
 
     tool_call = message["tool_calls"][0]
-    tool_call_id = tool_call["id"]
+    # Ensure tool_call_id is no longer than 40 characters (OpenAI's limit)
+    tool_call_id = tool_call["id"][:40] if len(tool_call["id"]) > 40 else tool_call["id"]
     tool_call_name = tool_call["function"]["name"]
     tool_call_args = json.loads(tool_call["function"]["arguments"])
 
