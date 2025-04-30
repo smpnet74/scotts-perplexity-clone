@@ -14,9 +14,9 @@ export function ModelSelector() {
   const { model, setModel } = useModelSelectorContext();
 
   return (
-    <div className="fixed bottom-0 left-0 p-4 z-50">
+    <div className="fixed top-0 right-0 p-4 z-50">
       <Select value={model} onValueChange={(v) => setModel(v)}>
-        <SelectTrigger className="w-[260px]">
+        <SelectTrigger className="w-[260px] text-white">
           <SelectValue placeholder="Theme" />
         </SelectTrigger>
         <SelectContent>

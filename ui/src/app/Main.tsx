@@ -52,7 +52,12 @@ export default function Main() {
             className="h-full"
             onSubmitMessage={async (message) => {
               // clear the logs before starting the new research
-              setState({ ...state, logs: [] });
+              setState({ 
+                ...state, 
+                logs: [],
+                // Set the research question from the chat message
+                research_question: message
+              });
               await new Promise((resolve) => setTimeout(resolve, 30));
             }}
             labels={{
