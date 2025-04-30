@@ -19,7 +19,11 @@ export default function Main() {
   });
 
   useCopilotChatSuggestions({
-    instructions: "Lifespan of penguins",
+    instructions: [
+      "What is quantum computing?",
+      "Explain climate change impacts",
+      "History of artificial intelligence"
+    ].join('\n'),
   });
 
   return (
@@ -36,7 +40,7 @@ export default function Main() {
           <ResearchCanvas />
         </div>
         <div
-          className="w-[500px] h-full flex-shrink-0"
+          className="w-[500px] h-full flex-shrink-0 pb-4 flex flex-col bg-[#E0E9FD]"
           style={
             {
               "--copilot-kit-background-color": "#E0E9FD",
