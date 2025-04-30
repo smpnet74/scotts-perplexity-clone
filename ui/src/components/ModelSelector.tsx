@@ -20,11 +20,9 @@ export function ModelSelector() {
           <SelectValue placeholder="Theme" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="model1">GPT-4o-Mini-Langgraph</SelectItem>
-          <SelectItem value="model2">Anthropic -Notworking </SelectItem>
-          <SelectItem value="model3">Google - Notworking</SelectItem>
-          <SelectItem value="model4">Gemini-2.5-Flash-Langgraph</SelectItem>
-          <SelectItem value="crewai">GPT-4o-Mini-CrewAI</SelectItem>
+          <SelectItem value="model1">gpt-4o-mini-langgraph</SelectItem>
+          <SelectItem value="model2">gemini-2.5-flash-langgraph</SelectItem>
+          <SelectItem value="crewai">gpt-4o-mini-crewai</SelectItem>
         </SelectContent>
       </Select>
     </div>
