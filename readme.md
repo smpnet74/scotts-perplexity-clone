@@ -10,8 +10,6 @@ The application operates as a distributed system with several interconnected com
 graph TB
     subgraph "Frontend (Vercel)"
         UI[Next.js UI] --> CK[CopilotKit]
-        UI --> PangeaAuth[Pangea Auth]
-        UI --> OpenAIDirect[OpenAI Direct]
     end
     
     subgraph "Backend (Fly.io)"
@@ -19,8 +17,12 @@ graph TB
         API --> CrewAI[CrewAI Agent]
         LangGraph --> Portkey
         CrewAI --> Portkey
+        LangGraph --> TavilyAPI[Tavily API]
+        CrewAI --> TavilyAPI
     end
     
+    UI --> PangeaAPI[Pangea API]
+    UI --> OpenAIAPI[OpenAI API]
     CK <--> API
     
     Portkey --> OpenAI[OpenAI API]
@@ -30,16 +32,14 @@ graph TB
     classDef backend fill:#e1ffc7,stroke:#2e933c
     classDef external fill:#ffe6cc,stroke:#e67e22
     
-    class UI,CK,PangeaAuth,OpenAIDirect frontend
+    class UI,CK frontend
     class API,LangGraph,CrewAI backend
-    class Portkey,OpenAI,Google external
+    class Portkey,OpenAI,Google,PangeaAPI,OpenAIAPI,TavilyAPI external
 ```
 
 1. **Frontend (Vercel)**: A Next.js application that provides the user interface and client-side functionality
    - **Next.js UI**: The core user interface components and pages
    - **CopilotKit**: Manages communication with the backend and provides the chat interface
-   - **Pangea Auth**: Handles user authentication through Pangea's hosted login
-   - **OpenAI Direct**: Direct integration with OpenAI for chat suggestions and UI enhancements
 
 2. **Backend (Fly.io)**: Python-based API and AI agents that perform complex reasoning tasks
    - **Python API**: FastAPI endpoints that receive requests from the frontend
@@ -50,6 +50,8 @@ graph TB
 3. **External Services**:
    - **OpenAI API**: Provides access to GPT models for both direct frontend use and backend agents
    - **Google API**: Provides access to Gemini models for backend agents
+   - **Pangea API**: Handles user authentication through Pangea's hosted login
+   - **Tavily API**: Provides web search capabilities for both LangGraph and CrewAI agents
 
 ## How Model Selection Works
 
