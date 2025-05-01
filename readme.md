@@ -8,26 +8,42 @@ The application operates as a distributed system with several interconnected com
 
 ```mermaid
 graph TB
+    %% Frontend components with alignment
     subgraph "Frontend (Vercel)"
-        UI[Next.js UI] --> CK[CopilotKit]
+        UI[Next.js UI]
+        CK[CopilotKit]
+        UI --> CK
+        %% Force alignment
+        style UI width:150px,text-align:center
+        style CK width:150px,text-align:center
     end
     
+    %% Backend components with centering
     subgraph "Backend (Fly.io)"
-        API[Python API] --> LangGraph[LangGraph Agent]
-        API --> CrewAI[CrewAI Agent]
+        API[Python API]
+        LangGraph[LangGraph Agent]
+        CrewAI[CrewAI Agent]
+        API --> LangGraph
+        API --> CrewAI
         LangGraph --> Portkey
         CrewAI --> Portkey
-        LangGraph --> TavilyAPI[Tavily API]
-        CrewAI --> TavilyAPI
+        %% Force centering
+        style API width:150px,text-align:center
+        style LangGraph width:150px,text-align:center
+        style CrewAI width:150px,text-align:center
     end
     
+    %% External connections
     UI --> PangeaAPI[Pangea API]
-    UI --> OpenAIAPI[OpenAI API]
+    CK --> OpenAIAPI[OpenAI API]
     CK <--> API
     
+    LangGraph --> TavilyAPI[Tavily API]
+    CrewAI --> TavilyAPI
     Portkey --> OpenAI[OpenAI API]
     Portkey --> Google[Google API]
     
+    %% Styling
     classDef frontend fill:#d4f1f9,stroke:#05668d
     classDef backend fill:#e1ffc7,stroke:#2e933c
     classDef external fill:#ffe6cc,stroke:#e67e22
@@ -35,6 +51,9 @@ graph TB
     class UI,CK frontend
     class API,LangGraph,CrewAI backend
     class Portkey,OpenAI,Google,PangeaAPI,OpenAIAPI,TavilyAPI external
+    
+    %% Layout adjustments
+    linkStyle default stroke-width:2px
 ```
 
 1. **Frontend (Vercel)**: A Next.js application that provides the user interface and client-side functionality
