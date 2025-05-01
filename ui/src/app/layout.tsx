@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@copilotkit/react-ui/styles.css";
 import "./globals.css";
+import { PangeaAuthProvider } from "@/lib/pangea-auth-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,7 +30,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <PangeaAuthProvider>
+          {children}
+        </PangeaAuthProvider>
       </body>
     </html>
   );

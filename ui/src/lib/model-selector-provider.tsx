@@ -21,17 +21,24 @@ export const ModelSelectorProvider = ({
 }: {
   children: ReactNode;
 }) => {
+  // Get model directly from URL parameter, like the original implementation
   const model =
     globalThis.window === undefined
       ? "model1"
       : new URL(window.location.href).searchParams.get("coAgentsModel") ??
         "model1";
+        
   const [hidden, setHidden] = useState<boolean>(false);
 
+  // Update the model and force a page reload to clear the entire page
+  // This matches the original implementation exactly
   const setModel = (model: string) => {
-    const url = new URL(window.location.href);
-    url.searchParams.set("coAgentsModel", model);
-    window.location.href = url.toString();
+    if (typeof window !== 'undefined') {
+      // Update URL and force a page reload - exactly like the original
+      const url = new URL(window.location.href);
+      url.searchParams.set("coAgentsModel", model);
+      window.location.href = url.toString();
+    }
   };
 
   const lgcDeploymentUrl =
@@ -39,6 +46,7 @@ export const ModelSelectorProvider = ({
       ? null
       : new URL(window.location.href).searchParams.get("lgcDeploymentUrl");
 
+  // Determine the agent based on the current model
   let agent = "research_agent";
   if (model === "model3") {
     agent = "research_agent_google_genai";
