@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import "@copilotkit/react-ui/styles.css";
 import "./globals.css";
 import { PangeaAuthProvider } from "@/lib/pangea-auth-provider";
@@ -33,6 +35,8 @@ export default function RootLayout({
         <PangeaAuthProvider>
           {children}
         </PangeaAuthProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
