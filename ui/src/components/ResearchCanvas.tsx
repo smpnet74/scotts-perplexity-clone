@@ -140,7 +140,7 @@ export function ResearchCanvas() {
           <h2 className="text-xl font-bold mb-3 text-primary">
             How to use this tool:
           </h2>
-          <p className="text-xs text-slate-700">
+          <p className="text-xl text-slate-700">
             Enter anything you would like to research in the chat window on the lower right of the screen. 
             The agentic workflows will begin and populate all the fields on the left. 
             If you wish to add or remove context for the research draft, use the add resource button or the delete button on a particular source. 
