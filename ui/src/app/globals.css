@@ -111,11 +111,3 @@ body {
 .copilotKitInput > .copilotKitInputControls > button:not([disabled]) {
   color: var(--copilot-kit-secondary-color);
 }
-
-/* Make thinking dots black instead of white/gray */
-.copilotkit-thinking-dots span,
-.copilotKitAssistantMessage .copilotkit-thinking-dots span,
-.copilotKitChat .copilotkit-thinking-dots span {
-  background-color: black !important;
-  opacity: 1 !important;
-}

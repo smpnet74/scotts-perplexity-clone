@@ -55,6 +55,7 @@ export default function Main() {
               "--copilot-kit-primary-color": "#FFFFFF",
               "--copilot-kit-contrast-color": "#000000",
               "--copilot-kit-secondary-contrast-color": "#000",
+              "--progress-dot-color": "black",
             } as any
           }
         >
