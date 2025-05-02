@@ -29,7 +29,13 @@ export default function Main() {
   return (
     <>
       <header className="flex h-[60px] bg-[#0E103D] text-white items-center px-10">
-        <h1 className="text-2xl font-medium">Scott's Perplexity Clone</h1>
+        <div className="flex items-center">
+          <img 
+            src="https://5yzd7skyh50nr53x.public.blob.vercel-storage.com/scottsperplexitycloneicon-N7HkyLNtwyQFG4k6kOGr4VTqCW9LQK.jpeg" 
+            alt="Scott's Perplexity Clone" 
+            className="h-10 w-auto" 
+          />
+        </div>
       </header>
 
       <div

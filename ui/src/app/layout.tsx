@@ -20,6 +20,9 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Scott's Perplexity Clone",
   description: "Scott's Perplexity Clone - An AI-powered research assistant inspired by Perplexity.ai.",
+  icons: {
+    icon: "https://5yzd7skyh50nr53x.public.blob.vercel-storage.com/scottsperplexitycloneicon-N7HkyLNtwyQFG4k6kOGr4VTqCW9LQK.jpeg"
+  }
 };
 
 export default function RootLayout({
