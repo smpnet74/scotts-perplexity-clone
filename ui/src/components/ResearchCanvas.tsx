@@ -143,7 +143,7 @@ export function ResearchCanvas() {
           <p className="text-xl text-slate-700">
             Enter anything you would like to research in the chat window on the lower right of the screen. 
             The agentic workflows will begin and populate all the fields on the left. 
-            If you wish to add or remove context for the research draft, use the add resource button or the delete button on a particular source. 
+            If you wish to add or remove context documents from the research draft, use the add resource button or the delete button on a particular context source. 
             Go back to the chat and ask the app to recreate the research draft from the current resources. 
             See the project github for more clarity around how everything works and the codebase: 
             <a href="https://github.com/smpnet74/scotts-perplexity-clone" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
