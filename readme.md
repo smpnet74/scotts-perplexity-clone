@@ -2,6 +2,15 @@
 
 This document explains the technical architecture and operational mechanics of Scott's Perplexity Clone, an AI research assistant inspired by Perplexity AI. The system features a sophisticated multi-agent architecture, secure authentication, and a responsive frontend.
 
+# Motivation
+
+Motivation for building the app: I am a perplexity junky.  I have been using it since its inception and appreciate the application's ability to assist me in research.  One of the limitations of that application that frustrates me is not being able to edit the sources that perplexity uses to generate its answers.  You can give it sources in the chat, but you cannot edit the sources it finds and have it answer the question using only the sources you want to reference.  Sometimes, when I read the sources perplexity suggests for context, only a few are compelling.  I often want to add my own sources to the sources that I found interesting from perplexity and then have the model answer.  This app allows you to do just that.
+
+In addition, I wanted to build and deploy a production resilient application that would enable me to test building agents with different agentic frameworks.  I wanted to deliver an application that I could use to test various security capabilities and products for model interaction, and something I could use to test any model, rather than just the model's perplexity supports.  Lastly, I wanted to have something to test various emerging AI development tooling, such as prompt engineering and observability platforms.
+
+I will not get into why I deployed to Vercel and Fly.io.  For now, just know that it made much more sense to leave out the complexity Kubernetes adds, and gain the added capabilities that Vercel and Fly offer.
+
+
 ## System Architecture
 
 The application operates as a distributed system with several interconnected components:
