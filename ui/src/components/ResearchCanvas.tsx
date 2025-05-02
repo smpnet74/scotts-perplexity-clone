@@ -137,12 +137,12 @@ export function ResearchCanvas() {
     <div className="w-full h-full overflow-y-auto p-10 bg-[#F5F8FF]">
       <div className="space-y-8 pb-10">
         <div className="mb-6 bg-white p-6 rounded-xl shadow-sm">
-          <h2 className="text-lg font-bold mb-3 text-primary">
+          <h2 className="text-xl font-bold mb-3 text-primary">
             How to use this tool:
           </h2>
-          <p className="text-sm text-slate-700">
+          <p className="text-xs text-slate-700">
             Enter anything you would like to research in the chat window on the lower right of the screen. 
-            The agentic workflows will begin and populate all the fields on the right. 
+            The agentic workflows will begin and populate all the fields on the left. 
             If you wish to add or remove context for the research draft, use the add resource button or the delete button on a particular source. 
             Go back to the chat and ask the app to recreate the research draft from the current resources. 
             See the project github for more clarity around how everything works and the codebase: 
