@@ -13,6 +13,7 @@ from copilotkit.integrations.fastapi import add_fastapi_endpoint
 from copilotkit import CopilotKitRemoteEndpoint, LangGraphAgent
 from copilotkit.crewai import CrewAIAgent
 from research_canvas.crewai.agent import ResearchCanvasFlow
+from research_canvas.crewai_qwen3.agent import ResearchCanvasQwen3Flow
 from research_canvas.langgraph.agent import graph
 
 # from contextlib import asynccontextmanager
@@ -76,6 +77,11 @@ sdk = CopilotKitRemoteEndpoint(
             description="Research agent.",
             flow=ResearchCanvasFlow(),
         ),
+        CrewAIAgent(
+            name="research_agent_crewai_qwen3",
+            description="Research agent using Qwen3 model.",
+            flow=ResearchCanvasQwen3Flow(),
+        ),
     ],
 )
 
@@ -108,6 +114,11 @@ async def copilotkit_info(request: Request):
                 {
                     "name": "research_agent_crewai",
                     "description": "Research agent.",
+                    "type": "crewai"
+                },
+                {
+                    "name": "research_agent_crewai_qwen3",
+                    "description": "Research agent using Qwen3 model.",
                     "type": "crewai"
                 }
             ],

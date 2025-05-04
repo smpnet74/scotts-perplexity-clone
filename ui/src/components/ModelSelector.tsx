@@ -22,6 +22,7 @@ export function ModelSelector() {
         <SelectItem value="model1">gpt-4o-mini-langgraph</SelectItem>
         <SelectItem value="model2">gemini-2.5-flash-langgraph</SelectItem>
         <SelectItem value="crewai">gpt-4o-mini-crewai</SelectItem>
+        <SelectItem value="qwen3-30b-a3b-fp8-crewai">qwen3-30b-a3b-fp8-crewai</SelectItem>
       </SelectContent>
     </Select>
   );

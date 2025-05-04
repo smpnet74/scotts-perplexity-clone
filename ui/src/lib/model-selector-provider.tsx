@@ -52,6 +52,8 @@ export const ModelSelectorProvider = ({
     agent = "research_agent_google_genai";
   } else if (model === "crewai") {
     agent = "research_agent_crewai";
+  } else if (model === "qwen3-30b-a3b-fp8-crewai") {
+    agent = "research_agent_crewai_qwen3";
   }
 
   return (
