@@ -1,69 +1,16 @@
 # Scott's Perplexity Clone: Technical Architecture
 
-This document explains the technical architecture and operational mechanics of Scott's Perplexity Clone, an AI research assistant inspired by Perplexity AI. The system features a sophisticated multi-agent architecture, secure authentication, and a responsive frontend.
+This document explains the technical architecture and operational mechanics of Scott's Perplexity Clone, an AI research assistant inspired by Perplexity AI. The system features a sophisticated multi-agent architecture, secure authentication, responsive frontend, and support for multiple LLM providers including OpenAI, Google, and Qwen models.
 
 # Motivation
 
-Motivation for building the app: I am a perplexity junky.  I have been using it since its inception and appreciate the application's ability to assist me in research.  One of the limitations of that application that frustrates me is not being able to edit the sources that perplexity uses to generate its answers.  You can give it sources in the chat, but you cannot edit the sources it finds and have it answer the question using only the sources you want to reference.  Sometimes, when I read the sources perplexity suggests for context, only a few are compelling.  I often want to add my own sources to the sources that I found interesting from perplexity and then have the model answer.  This app allows you to do just that.
+Motivation for building the app: I am a perplexity junky.  I have been using it since its inception and appreciate the application's ability to assist me in research.  One of the limitations that frustrates me is not being able to edit the sources that perplexity uses to generate its answers.  You can give it sources in the chat, but you cannot edit the sources it finds.  Sometimes, when I read the sources perplexity suggests, only a few are compelling.  I often want to add my own sources and then have the model answer.  This app allows you to do just that.
 
-In addition, I wanted to build and deploy a production resilient application that would enable me to test building agents with different agentic frameworks.  I wanted to deliver an application that I could use to test various security capabilities and products for model interaction, and something I could use to test any model, rather than just the model's perplexity supports.  Lastly, I wanted to have something to test various emerging AI development tooling, such as prompt engineering and observability platforms.
-
-I will not get into why I deployed to Vercel and Fly.io.  For now, just know that it made much more sense to leave out the complexity Kubernetes adds, and gain the added capabilities that Vercel and Fly offer.
+In addition, I wanted to build and deploy a resilient application that would enable me to test building agents with different agentic frameworks.  I wanted to deliver an application that I could use to test various inference security capabilities for model interaction, and something I could use to test any model, rather than just the model's perplexity supports.  Lastly, I wanted to have something to run thru the paces emerging AI development tooling, such as prompt engineering and observability platforms.
+I will not get into why I deployed to Vercel and Fly.io.  For now, just know that it made much more sense to leave out the K8 complexity, and gain the added capabilities that Vercel and Fly offer.
 
 
 ## System Architecture
-
-The application operates as a distributed system with several interconnected components:
-
-```mermaid
-graph TB
-    %% Frontend components with alignment
-    subgraph "Frontend (Vercel)"
-        UI[Next.js UI]
-        CK[CopilotKit]
-        UI --> CK
-        %% Force alignment
-        style UI width:150px,text-align:center
-        style CK width:150px,text-align:center
-    end
-    
-    %% Backend components with centering
-    subgraph "Backend (Fly.io)"
-        API[Python API]
-        LangGraph[LangGraph Agent]
-        CrewAI[CrewAI Agent]
-        API --> LangGraph
-        API --> CrewAI
-        LangGraph --> Portkey
-        CrewAI --> Portkey
-        %% Force centering
-        style API width:150px,text-align:center
-        style LangGraph width:150px,text-align:center
-        style CrewAI width:150px,text-align:center
-    end
-    
-    %% External connections
-    UI --> PangeaAPI[Pangea API]
-    CK --> OpenAIAPI[OpenAI API]
-    CK <--> API
-    
-    LangGraph --> TavilyAPI[Tavily API]
-    CrewAI --> TavilyAPI
-    Portkey --> OpenAI[OpenAI API]
-    Portkey --> Google[Google API]
-    
-    %% Styling
-    classDef frontend fill:#d4f1f9,stroke:#05668d
-    classDef backend fill:#e1ffc7,stroke:#2e933c
-    classDef external fill:#ffe6cc,stroke:#e67e22
-    
-    class UI,CK frontend
-    class API,LangGraph,CrewAI backend
-    class Portkey,OpenAI,Google,PangeaAPI,OpenAIAPI,TavilyAPI external
-    
-    %% Layout adjustments
-    linkStyle default stroke-width:2px
-```
 
 1. **Frontend (Vercel)**: A Next.js application that provides the user interface and client-side functionality
    - **Next.js UI**: The core user interface components and pages
@@ -78,6 +25,7 @@ graph TB
 3. **External Services**:
    - **OpenAI API**: Provides access to GPT models for both direct frontend use and backend agents
    - **Google API**: Provides access to Gemini models for backend agents
+   - **Qwen API**: Provides access to Qwen3 models via Portkey integration
    - **Pangea API**: Handles user authentication through Pangea's hosted login
    - **Tavily API**: Provides web search capabilities for both LangGraph and CrewAI agents
 
@@ -105,6 +53,8 @@ if (model === "model3") {
   agent = "research_agent_google_genai"; // Google Gemini model via LangGraph
 } else if (model === "crewai") {
   agent = "research_agent_crewai"; // CrewAI agent
+} else if (model === "qwen3-30b-a3b-fp8-crewai") {
+  agent = "research_agent_crewai_qwen3"; // Qwen3 model via CrewAI
 }
 ```
 
@@ -135,6 +85,17 @@ The CrewAI agent takes a different approach using a team of specialized agents:
 
 These agents communicate and collaborate to solve the research query, providing a different perspective through their specialized roles.
 
+### Qwen3 CrewAI Implementation
+
+The Qwen3 CrewAI agent extends the standard CrewAI architecture with support for the Qwen3 model:
+
+1. **Custom Wrapper**: A specialized `Qwen3ChatOpenAI` wrapper handles the Hermes-style tool calling format
+2. **Tool Calling Adaptation**: Converts between OpenAI's tool calling format and Qwen3's XML-based format
+3. **Resource Management**: Properly extracts and displays web search results in the UI
+4. **Error Handling**: Implements fallback mechanisms for API connection issues
+
+This implementation demonstrates the system's flexibility in supporting different LLM providers while maintaining a consistent user experience.
+
 ## Backend API Management
 
 ### Portkey Integration
@@ -145,8 +106,9 @@ Rather than hardcoding API keys and model configurations, the backend integrates
 - **Traffic Routing**: Intelligently routes requests to different models based on availability and cost
 - **Usage Tracking**: Monitors API usage and costs across different providers
 - **Rate Limiting**: Prevents exceeding API rate limits
+- **Model Configuration**: Manages specific configurations for different models (OpenAI, Google, Qwen)
 
-This architecture allows the system to seamlessly switch between different LLM providers without code changes, enhancing reliability and flexibility.
+This architecture allows the system to seamlessly switch between different LLM providers without code changes, enhancing reliability and flexibility. For the Qwen3 integration, a dedicated configuration (`PORTKEY_QWEN3_CONFIG`) is used to optimize the model's performance.
 
 ## Frontend Authentication System
 
