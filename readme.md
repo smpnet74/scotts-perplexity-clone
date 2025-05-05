@@ -94,6 +94,17 @@ The Qwen3 CrewAI agent extends the standard CrewAI architecture with support for
 3. **Resource Management**: Properly extracts and displays web search results in the UI
 4. **Error Handling**: Implements fallback mechanisms for API connection issues
 
+#### Qwen3 Deployment Architecture
+
+The Qwen3 model is deployed with the following characteristics:
+
+- **Scale-to-Zero Setup**: The model is hosted on Runpod with a scale-to-zero configuration to optimize costs
+- **Cold Start Time**: When the model is selected after being idle, it takes approximately 3-4 minutes for the container to spin up
+- **Initial Interaction**: Users may receive an error on the first interaction if the model is cold
+- **Retry Mechanism**: If an error occurs, users should refresh the page and submit their question again once the model is hot
+
+This deployment approach balances cost efficiency with availability, though users should be aware of the initial startup delay when selecting this model option.
+
 This implementation demonstrates the system's flexibility in supporting different LLM providers while maintaining a consistent user experience.
 
 ## Backend API Management
