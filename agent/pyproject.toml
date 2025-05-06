@@ -54,7 +54,6 @@ langgraph-checkpoint-sqlite = "^2.0.1"
 portkey-ai = "^1.2.0"
 aiosqlite = "^0.20.0"
 aiohttp = "^3.9.3"
-langsmith = "^0.1.52"
 
 [tool.poetry.scripts]
 demo = "research_canvas.demo:main"
