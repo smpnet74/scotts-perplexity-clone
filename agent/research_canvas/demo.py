@@ -4,6 +4,23 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+# Set up LangSmith environment variables
+api_key = os.getenv("LANGSMITH_API_KEY")
+if api_key and os.getenv("LANGSMITH_TRACING"):
+    # Set the required environment variables for LangSmith
+    os.environ["LANGSMITH_TRACING"] = "true"
+    os.environ["LANGSMITH_API_KEY"] = api_key
+    os.environ["LANGSMITH_ENDPOINT"] = os.getenv("LANGSMITH_ENDPOINT", "https://api.smith.langchain.com")
+    os.environ["LANGSMITH_PROJECT"] = os.getenv("LANGSMITH_PROJECT", "research-canvas")
+    
+    # Also set LangChain environment variables for compatibility
+    os.environ["LANGCHAIN_TRACING_V2"] = "true"
+    os.environ["LANGCHAIN_API_KEY"] = api_key
+    os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGSMITH_ENDPOINT", "https://api.smith.langchain.com")
+    os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGSMITH_PROJECT", "research-canvas")
+    
+    print("LangSmith tracing enabled with project:", os.environ["LANGSMITH_PROJECT"])
+
 # pylint: disable=wrong-import-position
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
